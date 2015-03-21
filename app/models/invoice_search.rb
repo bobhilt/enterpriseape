@@ -3,12 +3,12 @@ class InvoiceSearch
   
   def initialize(params)
     params ||= {}
-    @date_from = parsed_date(params[:date_from], 7.days.ago.to_date.to_s)
-    @date_to = parsed_date(params[:date_to], Date.today.to_s)
+    @date_from = parsed_date(params[:date_from], 7.days.ago.to_date)
+    @date_to = parsed_date(params[:date_to], Date.today)
   end
   
   def scope
-    Invoice.where('date BETWEEN ? and ?', @date_from, @date_to)
+    Invoice.where(:date => @date_from.beginning_of_day..@date_to.end_of_day)
   end
   
   private
